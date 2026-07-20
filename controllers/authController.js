@@ -11,8 +11,13 @@ function formatUser(user) {
   return {
     id: user._id,
     name: user.name,
+    role: user.role,
     email: user.email,
+    profilePicture: user.profilePicture,
+    bio: user.bio,
+    address: user.address,
     isEmailVerified: user.isEmailVerified,
+    isApproved: user.isApproved,
     createdAt: user.createdAt,
   };
 }
@@ -29,12 +34,12 @@ function getResetPasswordUrl(token) {
 
 const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !role || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: "Name, email, and password are required.",
+        message: "Name, role, email, and password, are required.",
       });
     }
 
@@ -58,10 +63,12 @@ const register = async (req, res) => {
 
     const user = await User.create({
       name,
+      role,
       email,
       password,
       emailVerificationToken: hashedToken,
       emailVerificationExpires: expires,
+      isApproved: role === "admin" ? true : false
     });
 
 

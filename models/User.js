@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema(
       trim: true,
       maxlength: [30, "Name cannot exceed 30 characters"],
     },
+    role: {
+      type: String,
+      default: "student",
+      required: [true, "role is required"],
+    },
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -23,9 +28,19 @@ const userSchema = new mongoose.Schema(
       minlength: [8, "Password must be at least 8 characters"],
       select: false,
     },
+    address: {
+      type: String,
+      default: "",
+      maxlength: [200, "address cannot exceed 200 characters"],
+    },
+   
     isEmailVerified: {
       type: Boolean,
       default: false,
+    },
+    isApproved: {
+      type: Boolean,
+      default: false, 
     },
     emailVerificationToken: {
       type: String,
@@ -49,13 +64,13 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function () {
   if (!this.isModified("password")) {
-    return next();
+    return;
   }
 
   this.password = await bcrypt.hash(this.password, 12);
-  next();
+  
 });
 
 userSchema.methods.comparePassword = async function (candidatePassword) {
