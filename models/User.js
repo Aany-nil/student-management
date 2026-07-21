@@ -28,6 +28,15 @@ const userSchema = new mongoose.Schema(
       minlength: [8, "Password must be at least 8 characters"],
       select: false,
     },
+     profilePicture: {
+      type: String,
+      default: "",
+    },
+    bio: {
+      type: String,
+      default: "",
+      maxlength: [500, "Bio cannot exceed 500 characters"],
+    },
     address: {
       type: String,
       default: "",

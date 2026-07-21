@@ -45,7 +45,19 @@ async function requireVerifiedEmail(req, res, next) {
   next();
 }
 
+function requireApproved(req, res, next) {
+  if (!req.user.isApproved) {
+    return res.status(403).json({
+      success: false,
+      message: "Your account is pending approval from admin.",
+    });
+  }
+
+  next();
+}
+
 module.exports = {
   protect,
   requireVerifiedEmail,
+  requireApproved,
 };
