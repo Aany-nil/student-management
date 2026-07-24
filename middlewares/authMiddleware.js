@@ -5,7 +5,7 @@ async function protect(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!authHeader || !authHeader.startsWith(" Bearer ")) {
       return res.status(401).json({
         success: false,
         message: "Not authorized. Please log in.",
@@ -56,8 +56,34 @@ function requireApproved(req, res, next) {
   next();
 }
 
+function requireRole(...allowedRoles) {
+  return (req, res, next) => {
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to access this resource.",
+      });
+    }
+
+    next();
+  };
+}
+
+function requireAdmin(req, res, next) {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({
+      success: false,
+      message: "Admin access required.",
+    });
+  }
+
+  next();
+}
+
 module.exports = {
   protect,
   requireVerifiedEmail,
   requireApproved,
+  requireRole,
+  requireAdmin,
 };
