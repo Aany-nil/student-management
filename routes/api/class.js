@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const subjectController = require("../../controllers/subjectController.js");
+const classController = require("../../controllers/classController.js");
 
 const {
   protect,
@@ -13,9 +14,7 @@ const {requireVerifiedEmail } = require("../../middlewares/authMiddleware.js");
 router.use(protect, requireAdmin, requireVerifiedEmail);
 
 
-router.post("/create", subjectController.createSubject);
-router.get("/allsubject", subjectController.getAllSubject);
-router.delete("/delete/:id", subjectController.deleteSubject);
+router.post("/create", classController.createClass);
 
 
 module.exports = router;

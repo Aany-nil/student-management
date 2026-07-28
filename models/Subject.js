@@ -2,6 +2,13 @@ const mongoose = require("mongoose");
 
 const subjectSchema = new mongoose.Schema(
   {
+    creatorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "creator id is required"]
+
+    },
+
     name: {
       type: String,
       required: [true, "Subject name is required"],
@@ -18,12 +25,12 @@ const subjectSchema = new mongoose.Schema(
 
     credit: {
       type: Number,
-      required: true,
+      required: false,
     },
 
     description: {
       type: String,
-      default: "",
+      default: false,
     },
   },
   {
