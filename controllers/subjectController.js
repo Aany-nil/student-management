@@ -1,7 +1,6 @@
 const Subject = require("../models/Subject");
 
 
-// Create Subject
 const createSubject = async (req, res) => {
   try {
     const { creatorId, name, code, credit, description, teacher } = req.body;
@@ -38,7 +37,6 @@ const createSubject = async (req, res) => {
   }
 };
 
-// Get All Subjects
 const getAllSubject = async (req, res) => {
   try {
     const subject = await Subject.find();
