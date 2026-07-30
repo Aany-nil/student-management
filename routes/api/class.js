@@ -16,6 +16,7 @@ router.use(protect, requireAdmin, requireVerifiedEmail);
 
 router.post("/create", classController.createClass);
 router.get("/allclasses", classController.getAllClasses);
+router.patch("/update-class/:id", classController.updateClass);
 
 
 module.exports = router;

@@ -62,11 +62,50 @@ const getAllClasses = async (req, res) => {
   }
 };
 
+const updateClass = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedClass = await Class.findByIdAndUpdate(
+      id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+      .populate("creatorId", "name email")
+      .populate("teacher", "name email")
+      .populate("students", "name email")
+      .populate("subjects.subject", "name code")
+      .populate("subjects.teacher", "name email");
+
+    if (!updatedClass) {
+      return res.status(404).json({
+        success: false,
+        message: "Class not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Class updated successfully",
+      data: updatedClass,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 
 
 module.exports = {
   createClass,
   getAllClasses,
+  updateClass,
 };
 
 
