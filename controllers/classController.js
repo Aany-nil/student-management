@@ -70,7 +70,7 @@ const updateClass = async (req, res) => {
       id,
       req.body,
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
       }
     )
@@ -100,12 +100,41 @@ const updateClass = async (req, res) => {
   }
 };
 
+const deleteClass = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedClass = await Class.findByIdAndDelete(id);
+
+    if(!deletedClass) {
+      return res.status(404).json({
+        success: false,
+        message: "class not found",
+      });
+    }
+     
+    return res.status(200).json({
+      success: true,
+      message: "class deleted successfully",
+      data: deletedClass,
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+    
+  };
+};
+
 
 
 module.exports = {
   createClass,
   getAllClasses,
   updateClass,
+  deleteClass,
 };
 
 
