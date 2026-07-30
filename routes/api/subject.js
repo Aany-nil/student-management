@@ -15,7 +15,9 @@ router.use(protect, requireAdmin, requireVerifiedEmail);
 
 router.post("/create", subjectController.createSubject);
 router.get("/allsubject", subjectController.getAllSubject);
+router.put("/update-subject/:id", subjectController.updateSubject);
 router.delete("/delete/:id", subjectController.deleteSubject);
+
 
 
 module.exports = router;

@@ -25,11 +25,33 @@ const classSchema = new mongoose.Schema(
        type: String,
        trim: true,
     },
-    subjects: {
+    teacher : {
+       type: mongoose.Schema.Types.ObjectId,
+       ref: "User"
+    },
+
+    students: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      },
+    ],
+
+    subjects: [
+      {
+      subject: {
         type: mongoose.Schema.Types.ObjectId,
          ref: "Subject",
          required: true,
-    }
+    },
+
+      teacher: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+      },
+    ],
 
   },
   {

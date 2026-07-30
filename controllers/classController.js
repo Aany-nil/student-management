@@ -6,12 +6,12 @@ const User = require("../models/User");
 
 const createClass = async (req, res) => {
   try {
-    const { creatorId, subjectId, name, code, section } = req.body;
+    const { creatorId, name, code, section,teacher, subjects } = req.body;
 
-    if (!creatorId || !subjectId || !name || !code || !section) {
+    if (!creatorId || !name || !code || !section) {
       return res.status(400).json({
         success: false,
-        message: "creatorId, subjectId, name, code and section are required.",
+        message: "creatorId, name, code and section are required.",
       });
     }
 
@@ -20,7 +20,8 @@ const createClass = async (req, res) => {
       name,
       code,
       section,
-      subjects: subjectId,
+      teacher,
+      subjects,
     });
 
     await newClass.save();
@@ -39,8 +40,33 @@ const createClass = async (req, res) => {
   }
 };
 
+const getAllClasses = async (req, res) => {
+  try {
+    const allClasses = await Class.find()
+      .populate("creatorId", "name email")
+      .populate("teacher", "name email")
+      .populate("students", "name email")
+      .populate("subjects.subject", "name code credit")
+      .populate("subjects.teacher", "name email");
+
+    res.status(200).json({
+      success: true,
+      message: "Classes retrieved successfully.",
+      data: allClasses,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
 module.exports = {
   createClass,
+  getAllClasses,
 };
 
 

@@ -57,6 +57,40 @@ const getAllSubject = async (req, res) => {
   }
 };
 
+const updateSubject = async (req, res) => {
+  try {
+    const subject = await Subject.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runvalidators: true,
+      }
+    );
+
+    if(!subject) {
+      return res.status(404).json({
+        success: false,
+        message: "subject not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "subject updated successfully",
+      data: subject,
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+    
+  };
+
+};
+
 // Delete Subject
 const deleteSubject = async (req, res) => {
       const { id } = req.params;
@@ -78,6 +112,6 @@ const deleteSubject = async (req, res) => {
 module.exports = {
   createSubject,
   getAllSubject,
+  updateSubject,
   deleteSubject
-
 };
