@@ -11,7 +11,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "profile-pictures/student-management/notice",
+    folder: "student-management/notice",
     allowed_formats: ["jpg", "jpeg", "png"],
   },
 });
