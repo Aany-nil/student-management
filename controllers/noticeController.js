@@ -1,4 +1,5 @@
 const Notice = require("../models/Notice");
+const cloudinary = require("cloudinary").v2;
 
 const createNotice = async (req, res) => {
     try {
@@ -114,8 +115,83 @@ const noticeUpdate = async (req, res) => {
     }
 };
 
+const noticeDelete = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const notice = await Notice.findById(id);
+
+        if(!notice) {
+            return res.status(404).json({
+                success: false,
+                message: "notice not found",
+            });
+        }
+
+        if(notice.image && notice.image.public_id) {
+            await cloudinary.uploader.destroy(notice.image.public_id);
+        }
+
+        await Notice.findByIdAndDelete(id);
+
+        return res.status(200).json({
+            success: true,
+            message: "notice delete successfully",
+        });
+    } catch (error) {
+       
+        return res.status(500).json({
+            success: false,
+            message: "notice delete to failed",
+            error: error.message,
+        });
+    }
+};
+
+const likeCreate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user._id;
+
+    const notice = await Notice.findById(id);
+
+    if (!notice) {
+      return res.status(404).json({
+        success: false,
+        message: "Notice not found",
+      });
+    }
+
+    const liked = notice.likes.some(
+      (like) => like.toString() === userId.toString()
+    );
+
+    if (liked) {
+      return res.status(400).json({
+        success: false,
+        message: "You already liked this notice",
+      });
+    }
+
+    notice.likes.push(userId);
+
+    await notice.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Notice liked successfully",
+      totalLike: notice.likes.length,
+      data: notice,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to like notice",
+      error: error.message,
+    });
+  }
+};
 
 
 
-
-module.exports = { createNotice, getAllNotice, noticeUpdate, };
+module.exports = { createNotice, getAllNotice, noticeUpdate, noticeDelete, likeCreate };
