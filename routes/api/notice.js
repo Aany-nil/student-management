@@ -14,6 +14,7 @@ router.use(protect,requireVerifiedEmail);
 
 router.post("/create", requireRole("admin", "teacher"), upload.single("image"),  noticeController.createNotice);
 router.get("/allnotice", noticeController.getAllNotice);
+router.put("/noticeupdate/:id", requireRole("admin", "teacher"), upload.single("image"), noticeController.noticeUpdate);
 
 
 module.exports = router;

@@ -68,6 +68,54 @@ const getAllNotice = async (req, res) => {
     };
 }
 
+const noticeUpdate = async (req, res) => {
+    try {
+       const { id } = req.params;
+       const { title, description } = req.body;
+       
+       const notice = await Notice.findById(id);
+
+       if(!notice) {
+        return res.status(404).json({
+            success: false,
+            message: "notice is not found",
+        });
+       }
+
+       if(title) {
+        notice.title = title;
+       }
+
+       if(description) {
+        notice.description = description;
+       }
+
+       if(req.file) {
+        notice.image = {
+            url: req.file.path,
+            public_id: req.file.filename,
+          };
+
+       };
+
+       await notice.save();
+
+       return res.status(200).json({
+        success: true,
+        message: "notice updated successfully",
+        data: notice,
+       });
+    } catch (error) {
+       return res.status(500).json({
+        success: false,
+        message: "falied to update notice",
+        error: error.message,
+       });  
+    }
+};
 
 
-module.exports = { createNotice, getAllNotice, };
+
+
+
+module.exports = { createNotice, getAllNotice, noticeUpdate, };
