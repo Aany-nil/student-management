@@ -45,6 +45,29 @@ const createNotice = async (req, res) => {
     }
 }
 
+const getAllNotice = async (req, res) => {
+    try {
+        const notice = await Notice.find()
+        .populate("createdBy", "name role email profilePicture")
+        .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            message: "notice faced successfully",
+            total: notice.length,
+            data: notice,
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "notice faced to failed",
+            error: error.message,
+        });
+        
+    };
+}
 
 
-module.exports = { createNotice };
+
+module.exports = { createNotice, getAllNotice, };

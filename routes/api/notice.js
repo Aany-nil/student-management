@@ -13,6 +13,7 @@ const {requireVerifiedEmail } = require("../../middlewares/authMiddleware.js");
 router.use(protect,requireVerifiedEmail);
 
 router.post("/create", requireRole("admin", "teacher"), upload.single("image"),  noticeController.createNotice);
+router.get("/allnotice", noticeController.getAllNotice);
 
 
 module.exports = router;
