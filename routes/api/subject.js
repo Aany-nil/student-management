@@ -17,6 +17,7 @@ router.post("/create", subjectController.createSubject);
 router.get("/allsubject", subjectController.getAllSubject);
 router.put("/update-subject/:id", subjectController.updateSubject);
 router.delete("/delete/:id", subjectController.deleteSubject);
+router.get("/subject-by-id/:id", subjectController.subjectById);
 
 
 

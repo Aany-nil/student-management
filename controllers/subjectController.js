@@ -89,7 +89,6 @@ const updateSubject = async (req, res) => {
 
 };
 
-// Delete Subject
 const deleteSubject = async (req, res) => {
       const { id } = req.params;
     try {
@@ -107,9 +106,30 @@ const deleteSubject = async (req, res) => {
     }
   }
 
+const subjectById = async (req, res) => {
+  try {
+    let id = req.params;
+    const subjectInfo = await Subject.findById(id.id);
+        
+        return res.status(200).json({
+          success: true,
+          message: "subject retrieved successfully.",
+          data: subjectInfo,
+        });
+        
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve subject",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createSubject,
   getAllSubject,
   updateSubject,
-  deleteSubject
+  deleteSubject,
+  subjectById,
 };
