@@ -8,6 +8,7 @@ const {
   getTeachers,
   getStudents,
   getAllUsers,
+  getStudentById,
 } = require("../../controllers/adminController");
 const { protect, requireAdmin } = require("../../middlewares/authMiddleware");
 
@@ -18,6 +19,7 @@ router.delete("/users/:userId/reject", rejectUser);
 router.get("/teachers", getTeachers);
 router.get("/students", getStudents);
 router.get("/users", getAllUsers);
+router.get("/get-student/:id", getStudentById);
 
 
 

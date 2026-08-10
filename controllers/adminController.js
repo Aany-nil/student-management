@@ -51,7 +51,7 @@ const getPendingUsers = async (req, res) => {
         },
       },
     });
-    
+
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -228,6 +228,28 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+const getStudentById = async (req, res) => {
+  try {
+    let id = req.params;
+    const studentInfo = await User.findById(id.id);
+    
+    return res.status(200).json({
+      success: true,
+      message: "student retrieved successfully.",
+      data: studentInfo,
+    });
+    
+    
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve users.",
+      error: error.message,
+    });
+  }
+};
+
+
 
 
 
@@ -238,4 +260,5 @@ module.exports = {
   getTeachers,
   getStudents,
   getAllUsers,
+  getStudentById,
 };
