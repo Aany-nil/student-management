@@ -6,7 +6,7 @@ const User = require("../models/User");
 
 const createClass = async (req, res) => {
   try {
-    const { creatorId, name, code, section,teacher, subjects } = req.body;
+    const { creatorId, name, code, section,teacher, subjects, students } = req.body;
 
     if (!creatorId || !name || !code || !section) {
       return res.status(400).json({
@@ -21,7 +21,8 @@ const createClass = async (req, res) => {
       code,
       section,
       teacher,
-      subjects,
+      subjects: subjects || [],
+      students: students || [],
     });
 
     await newClass.save();
