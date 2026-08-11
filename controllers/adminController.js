@@ -232,8 +232,15 @@ const getStudentById = async (req, res) => {
   try {
     let id = req.params;
     const studentInfo = await User.findById(id.id);
-    
-    return res.status(200).json({
+
+    if(!studentInfo) {
+      return res.status(404).json({
+        success: false,
+        message: "student not found",
+      });
+    }
+  
+      return res.status(200).json({
       success: true,
       message: "student retrieved successfully.",
       data: studentInfo,
@@ -248,8 +255,6 @@ const getStudentById = async (req, res) => {
     });
   }
 };
-
-
 
 
 

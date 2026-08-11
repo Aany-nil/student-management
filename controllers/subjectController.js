@@ -26,7 +26,7 @@ const createSubject = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Subject created successfully.",
-      data: subject
+      data: subject,
     });
   } catch (error) {
     return res.status(500).json({
@@ -110,8 +110,16 @@ const subjectById = async (req, res) => {
   try {
     let id = req.params;
     const subjectInfo = await Subject.findById(id.id);
+    
+    if(!subjectInfo) {
+      return res.status(404).json({
+        success: false,
+        message: "subject not found.",
+      });
+
+     }
         
-        return res.status(200).json({
+    return res.status(200).json({
           success: true,
           message: "subject retrieved successfully.",
           data: subjectInfo,
