@@ -280,6 +280,7 @@ const getMe = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
+  
     const { name, bio, address } = req.body;
     const userId = req.user._id;
 
@@ -293,8 +294,10 @@ const updateProfile = async (req, res) => {
       updateData.profilePicture = req.file.path;
     }
 
+
+
     const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
-      new: true,
+      returnDocument: "after",
       runValidators: true,
     });
 
@@ -310,7 +313,6 @@ const updateProfile = async (req, res) => {
         .join(", ");
       return res.status(400).json({ success: false, message });
     }
-
     return res.status(500).json({
       success: false,
       message: "Profile update failed.",
