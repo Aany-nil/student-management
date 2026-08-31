@@ -23,11 +23,12 @@ const makePayment = async (req, res) => {
               message: "course not found",  
             });
         }
+        const transactionId = `TXN_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
 
         await Payment.create({
             userId,
             courseId,
-            tran_id,
+            tran_id: transactionId,
             amount: amount || course.credit || 100,
             status: "pending"
         });
