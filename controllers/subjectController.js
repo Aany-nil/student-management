@@ -9,6 +9,7 @@ const createSubject = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "creatorId, name and code are required.",
+        error: error.message,
       });
     }
    

@@ -12,8 +12,8 @@ async function checkCloudinary() {
     const result = await cloudinary.api.ping();
     console.log("✅ Cloudinary Connection Successful:", result);
   } catch (error) {
-    console.error("❌ Cloudinary Error Found:", error.message || error);
+    console.error("Cloudinary Error Found:", error.message || error);
   }
 }
 
-checkCloudinary();
+module.exports = { checkCloudinary }
