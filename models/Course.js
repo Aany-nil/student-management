@@ -19,29 +19,26 @@ const courseSchema = new mongoose.Schema({
     uppercase: true,
     trim: true,
   },
-  credt:{
+  credit:{
     type: Number,
     required: false,
   },
   description: {
     type: String,
-    default: false,
+    default: "",
   },
-  course: [
-        {
-          name: {
-          type: mongoose.Schema.Types.ObjectId,
-           ref: "Course",
-           required: true,
+  teachers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
       },
-  
-        teacher: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true,
-          },
-        },
-      ],
+    ],
+    students: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
 },
   {
     timestamps: true,
